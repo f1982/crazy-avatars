@@ -2,14 +2,14 @@
 import wepy from 'wepy';
 export default class MyPage extends wepy.page {
   config = {
-    navigationBarTitleText: 'TABBAR',
-    usingComponents: {
-    }
+    navigationBarTitleText: 'My Page',
+    usingComponents: {}
   };
   components = {};
 
   data = {
-
+    netResult: null,
+    favorites: []
   };
   methods = {
     func1() {
@@ -26,14 +26,36 @@ export default class MyPage extends wepy.page {
   };
 
   events = {};
-  onLoad() {}
+  onLoad() {
+    const self = this;
+    wepy.showLoading();
+   
+    
+    wepy.request({
+      url: 'https://www.f1982.com/app/time-signet/style-list.php',
+      success: function(d) {
+         wepy.hideLoading();
+        self.netResult = d.data.code;
+        console.log('d is: ', d);
+        self.favorites = d.data.data.styles;
+        self.$apply();
+      }
+    });
+  }
   // Other properties
 }
 </script>
 
-<template lang="wxml">
+<template lang="xml">
   <view class="tab-container">
-My page
+    <view>My page</view>
+    <view>{{netResult}}</view>
+
+    <block wx:for-items="{{favorites}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+      <view @tap="tap" class="mylist">
+        <text>{{item.name}}</text>: {{item.index}}
+      </view>
+    </block>
   </view>
 </template>
 

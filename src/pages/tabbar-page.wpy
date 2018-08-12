@@ -4,8 +4,8 @@ import Counter from '../components/counter';
 
 export default class TabbarPage extends wepy.page {
   config = {
-      navigationBarTitleText: 'TABBAR',
-      usingComponents: {
+    navigationBarTitleText: 'Category Page',
+    usingComponents: {
       'wxc-tab': '../packages/@minui/wxc-tab/dist/index',
       'wxc-tab-panel': '../packages/@minui/wxc-tab/dist/panel'
     }
@@ -30,11 +30,12 @@ export default class TabbarPage extends wepy.page {
       console.log(
         `ComponentId:${e.detail.componentId},you selected:${e.detail.key}`
       );
-    },
+    }
   };
 
   events = {};
-  onLoad() {}
+  onLoad() {
+  }
   // Other properties
 }
 </script>
@@ -66,16 +67,14 @@ export default class TabbarPage extends wepy.page {
 
 <style lang="less">
 /** less **/
-.tab-container{
-    height: 100%;
-    width: 100%;
-    border: 1rpx solid #ffcc00;
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    
-
+.tab-container {
+  height: 100%;
+  width: 100%;
+  border: 1rpx solid #ffcc00;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
 }
 </style>
