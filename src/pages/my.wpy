@@ -1,0 +1,52 @@
+<script>
+import wepy from 'wepy';
+export default class MyPage extends wepy.page {
+  config = {
+    navigationBarTitleText: 'TABBAR',
+    usingComponents: {
+    }
+  };
+  components = {};
+
+  data = {
+
+  };
+  methods = {
+    func1() {
+      console.log('func1');
+    },
+    func2() {
+      console.log('func2');
+    },
+    onClick: function(e) {
+      console.log(
+        `ComponentId:${e.detail.componentId},you selected:${e.detail.key}`
+      );
+    }
+  };
+
+  events = {};
+  onLoad() {}
+  // Other properties
+}
+</script>
+
+<template lang="wxml">
+  <view class="tab-container">
+My page
+  </view>
+</template>
+
+<style lang="less">
+/** less **/
+.tab-container {
+  height: 100%;
+  width: 100%;
+  border: 1rpx solid #ffcc00;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+}
+</style>

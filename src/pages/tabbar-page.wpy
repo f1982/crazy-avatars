@@ -1,0 +1,81 @@
+<script>
+import wepy from 'wepy';
+import Counter from '../components/counter';
+
+export default class TabbarPage extends wepy.page {
+  config = {
+      navigationBarTitleText: 'TABBAR',
+      usingComponents: {
+      'wxc-tab': '../packages/@minui/wxc-tab/dist/index',
+      'wxc-tab-panel': '../packages/@minui/wxc-tab/dist/panel'
+    }
+  };
+  components = { counter1: Counter };
+
+  data = {
+    tabs: [
+      { title: '选项一', content: '内容一' },
+      { title: '选项二', content: '内容二' },
+      { title: '选项三', content: '内容三' }
+    ]
+  };
+  methods = {
+    func1() {
+      console.log('func1');
+    },
+    func2() {
+      console.log('func2');
+    },
+    onClick: function(e) {
+      console.log(
+        `ComponentId:${e.detail.componentId},you selected:${e.detail.key}`
+      );
+    },
+  };
+
+  events = {};
+  onLoad() {}
+  // Other properties
+}
+</script>
+
+<template lang="wxml">
+  <view class="tab-container">
+    <wxc-tab-panel 
+        wx:for="{{tabs}}" 
+        wx:for-item="tab" 
+        wx:key="{{tab.content}}" 
+        tab-index="{{index}}"
+        component-id="c1"
+        style="flex:1;"
+        label="{{tab.title}}">
+        {{tab.content}}
+        </wxc-tab-panel>
+    <wxc-tab 
+        bind:tabchange="onClick" 
+        default-index="{{4}}"
+        active-text-color="#108ee9" 
+        active-line-color="#108ee9" 
+        component-id="c1" 
+        animate="{{true}}" 
+        style="height: 60rpx;"
+        full-screen="{{true}}">
+        </wxc-tab>
+  </view>
+</template>
+
+<style lang="less">
+/** less **/
+.tab-container{
+    height: 100%;
+    width: 100%;
+    border: 1rpx solid #ffcc00;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    
+
+}
+</style>

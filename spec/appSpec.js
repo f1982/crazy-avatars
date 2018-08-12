@@ -1,3 +1,5 @@
+//Jasmine Doc
+//https://jasmine.github.io/pages/docs_home.html
 describe("A suite", function () {
   it("contains spec with an expectation", function () {
     expect(true).toBe(true);
