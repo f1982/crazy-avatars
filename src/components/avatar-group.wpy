@@ -1,0 +1,46 @@
+<!-- Avatar group component -->
+<template>
+    <view class="avatar-list">
+        <repeat for="{{groupData}}" item="item">
+            <avatar :itemData="item" />
+        </repeat>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import Avatar from './avatar';
+
+export default class AvatarGroup extends wepy.component {
+  props = {
+    groupData: []
+  };
+
+  data = {};
+
+  components = {
+    avatar: Avatar
+  };
+
+  methods = {};
+
+  events = {};
+
+  watch = {};
+
+  computed = {};
+
+  onLoad() {}
+
+  onShow() {}
+}
+</script>
+
+<style lang='less'>
+.avatar-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+</style>
