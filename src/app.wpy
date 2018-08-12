@@ -16,16 +16,14 @@ import 'wepy-async-function';
 import { setStore } from 'wepy-redux';
 import configStore from './store';
 
+// import request from 'wepy-better-request';
+
 const store = configStore();
 setStore(store);
 
 export default class extends wepy.app {
   config = {
-    pages: [
-      'pages/index', 
-      'pages/tabbar-page',
-      'pages/my'
-      ],
+    pages: ['pages/index', 'pages/tabbar-page', 'pages/my'],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
@@ -33,11 +31,11 @@ export default class extends wepy.app {
       navigationBarTextStyle: 'black'
     },
     tabBar: {
-      borderStyle:'white',
-      backgroundColor:'#ffcc00',
-      selectedColor:'#ff0000',
-      color:'#000',
-      position:'bottom',
+      borderStyle: 'white',
+      backgroundColor: '#ffcc00',
+      selectedColor: '#ff0000',
+      color: '#000',
+      position: 'bottom',
       list: [
         {
           pagePath: 'pages/index',
@@ -68,6 +66,12 @@ export default class extends wepy.app {
   constructor() {
     super();
     this.use('requestfix');
+    this.use('promisify');
+
+    // 配置一遍就可以了，可以在app.wpy文件中配置
+    // request.config({
+    //   baseURL: 'https://www.f1982.com/app/time-signet'
+    // });
   }
 
   onLaunch() {

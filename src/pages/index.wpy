@@ -99,6 +99,7 @@ import moduleA from 'module-a'; // aliasFields ignore module example
 import Group from '../components/group';
 import Toast from 'wepy-com-toast';
 import testMixin from '../mixins/test';
+import requestMixin from '../mixins/request';
 
 console.log('moduleA ignored: ', moduleA); // => moduleA ignored: {}
 
@@ -132,7 +133,7 @@ export default class Index extends wepy.page {
     toast: Toast
   };
 
-  mixins = [testMixin];
+  mixins = [testMixin,requestMixin];
 
   data = {
     
@@ -301,6 +302,27 @@ export default class Index extends wepy.page {
 
       self.$apply();
     });
+
+
+    //
+    self.http({
+        url: '/style-list.php?time=1&t=css&c=Nw==&i=1'
+      })
+        .then(response => {
+          // statusCode === 200 的逻辑
+          console.log('data is: ', response.data);
+          let d = response.data;
+          self.netResult = d.code;
+          self.favorites = d.data.styles;
+          self.$apply();
+        })
+        .catch(err => {
+          // statusCode非200，或者其他错误处理
+        });
+  }
+
+  onShow(){
+    // this.testRequest();
   }
 }
 </script>

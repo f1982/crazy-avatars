@@ -1,11 +1,16 @@
 <script>
 import wepy from 'wepy';
+// import request from 'wepy-better-request';
+
+import requestMixin from '../mixins/request';
+
 export default class MyPage extends wepy.page {
   config = {
     navigationBarTitleText: 'My Page',
     usingComponents: {}
   };
   components = {};
+  mixins = [requestMixin];
 
   data = {
     netResult: null,
@@ -19,6 +24,21 @@ export default class MyPage extends wepy.page {
       console.log('func2');
     },
     onClick: function(e) {
+      const self = this;
+
+      self
+        .http({
+          url: '/style-list.php?time=1&t=css&c=Nw==&i=1'
+        })
+        .then(d => {
+          self.netResult = d.code;
+          self.favorites = d.data.styles;
+          self.$apply();
+        })
+        .catch(err => {
+          // statusCode非200，或者其他错误处理
+        });
+
       console.log(
         `ComponentId:${e.detail.componentId},you selected:${e.detail.key}`
       );
@@ -28,19 +48,33 @@ export default class MyPage extends wepy.page {
   events = {};
   onLoad() {
     const self = this;
-    wepy.showLoading();
-   
-    
-    wepy.request({
-      url: 'https://www.f1982.com/app/time-signet/style-list.php',
-      success: function(d) {
-         wepy.hideLoading();
-        self.netResult = d.data.code;
-        console.log('d is: ', d);
-        self.favorites = d.data.data.styles;
-        self.$apply();
-      }
-    });
+    // wepy.showLoading();
+
+    // wepy.request({
+    //   url: 'https://www.f1982.com/app/time-signet/style-list.php',
+    //   success: function(d) {
+    //      wepy.hideLoading();
+    //     self.netResult = d.data.code;
+    //     console.log('d is: ', d);
+    //     self.favorites = d.data.data.styles;
+    //     self.$apply();
+    //   }
+    // });
+
+    // request({
+    //   url: '/style-list.php?time=1&t=css&c=Nw==&i=1'
+    // })
+    //   .then(response => {
+    //     // statusCode === 200 的逻辑
+    //     console.log('data is: ', response.data);
+    //     let d = response.data;
+    //     self.netResult = d.code;
+    //     self.favorites = d.data.styles;
+    //     self.$apply();
+    //   })
+    //   .catch(() => {
+    //     // statusCode非200，或者其他错误处理
+    //   });
   }
   // Other properties
 }
@@ -50,7 +84,7 @@ export default class MyPage extends wepy.page {
   <view class="tab-container">
     <view>My page</view>
     <view>{{netResult}}</view>
-
+    <button @tap="onClick">Http Request</button>
     <block wx:for-items="{{favorites}}" wx:for-index="index" wx:for-item="item" wx:key="id">
       <view @tap="tap" class="mylist">
         <text>{{item.name}}</text>: {{item.index}}
