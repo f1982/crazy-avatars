@@ -1,5 +1,33 @@
+<style lang="less">
+.tab-container {
+  height: 100%;
+  width: 100%;
+  border: 1rpx solid #ffcc00;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+}
+</style>
+
+<template lang="xml">
+  <view>
+    <view>
+      <open-data type="userAvatarUrl" class="user-avatar"></open-data>
+      <open-data type="userNickName"></open-data>
+    </view>
+    <view>{{netResult}}</view>
+    <button @tap="onClick">Http Request</button>
+      <repeat for="{{favorites}}" item="item">
+        <avatar :itemData="item" />
+      </repeat>
+  </view>
+</template>
+
 <script>
 import wepy from 'wepy';
+import Avatar from '../components/avatar';
 // import request from 'wepy-better-request';
 
 import requestMixin from '../mixins/request';
@@ -9,7 +37,9 @@ export default class MyPage extends wepy.page {
     navigationBarTitleText: 'My Page',
     usingComponents: {}
   };
-  components = {};
+  components = {
+    avatar: Avatar
+  };
   mixins = [requestMixin];
 
   data = {
@@ -80,29 +110,4 @@ export default class MyPage extends wepy.page {
 }
 </script>
 
-<template lang="xml">
-  <view class="tab-container">
-    <view>My page</view>
-    <view>{{netResult}}</view>
-    <button @tap="onClick">Http Request</button>
-    <block wx:for-items="{{favorites}}" wx:for-index="index" wx:for-item="item" wx:key="id">
-      <view @tap="tap" class="mylist">
-        <text>{{item.name}}</text>: {{item.index}}
-      </view>
-    </block>
-  </view>
-</template>
 
-<style lang="less">
-/** less **/
-.tab-container {
-  height: 100%;
-  width: 100%;
-  border: 1rpx solid #ffcc00;
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-}
-</style>

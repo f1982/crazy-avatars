@@ -17,6 +17,8 @@
 </style>
 <template>
   <view class="container">
+    <wxc-dialog class="wxc-dialog" title="标题" content="高柱当前状态、信息和解决方法" confirm-text="主操作" cancel-text="辅助操作" @confirm="onConfirm"
+          @cancel="onCancel(0)"></wxc-dialog>
     <view class="userinfo" @tap="handleViewTap">
       <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
       <view class="userinfo-nickname">{{ userInfo.nickName }}</view>
@@ -38,8 +40,7 @@
     <panel>
       <view class="title" slot="title">我的测试</view>
       <button @tap="dialog" size="mini">Mindialog</button>
-      <wxc-dialog class="wxc-dialog" title="标题" content="高柱当前状态、信息和解决方法" confirm-text="主操作" cancel-text="辅助操作" @confirm="onConfirm"
-          @cancel="onCancel(0)"></wxc-dialog>
+     
       <wxc-countdown countdown="{{10000}}" format="hh:mm:ss"></wxc-countdown>
 
       <button @tap="goTabbarPage" size="mini">到其他页面</button>
@@ -63,7 +64,7 @@
 
       <text class="testcounter">计数组件1: </text>
       <view class="counterview">
-        <counter1 @index-emit.user="counterEmit" />
+        <counter1 @index-emit.user="counterEmit" ></counter1>
       </view>
 
       <text class="testcounter">计数组件2: </text>
@@ -75,8 +76,8 @@
 
     <panel>
       <view class="title" slot="title">测试组件Repeat</view>
-      <repeat for="" index="index" item="item" key="key">
-        <group :grouplist="item" :indexa="index"></group>
+      <repeat for="{{groupList}}" index="index" item="item" key="key">
+        <group :grouplist="item" :index="index"></group>
       </repeat>
     </panel>
 
@@ -133,10 +134,9 @@ export default class Index extends wepy.page {
     toast: Toast
   };
 
-  mixins = [testMixin,requestMixin];
+  mixins = [testMixin, requestMixin];
 
   data = {
-    
     test: 0,
     mynum: 20,
     userInfo: {
@@ -220,15 +220,24 @@ export default class Index extends wepy.page {
 
     goTabbarPage() {
       console.log('tabbar');
-      this.$redirect('./tabbar-page')
+      this.$redirect('./tabbar-page');
     },
+    // Dialog component
     dialog() {
       console.log('dialog is: ');
       console.log('this.$wxpage is: ', this.$wxpage);
       let dialogComponent = this.$wxpage.selectComponent('.wxc-dialog');
       dialogComponent && dialogComponent.show();
     },
-    
+    onConfirm(){
+      let dialogComponent = this.$wxpage.selectComponent('.wxc-dialog');
+      dialogComponent && dialogComponent.hide();
+    },
+    onCancel(){
+      let dialogComponent = this.$wxpage.selectComponent('.wxc-dialog');
+      dialogComponent && dialogComponent.hide();
+    },
+
     tap() {
       console.log('do noting from ' + this.$name);
     },
@@ -303,25 +312,26 @@ export default class Index extends wepy.page {
       self.$apply();
     });
 
-
+  
     //
-    self.http({
-        url: '/style-list.php?time=1&t=css&c=Nw==&i=1'
+    self
+      .http({
+        url: '/style-list2.php?time=1&t=css&c=Nw==&i=1'
       })
-        .then(response => {
-          // statusCode === 200 的逻辑
-          console.log('data is: ', response.data);
-          let d = response.data;
-          self.netResult = d.code;
-          self.favorites = d.data.styles;
-          self.$apply();
-        })
-        .catch(err => {
-          // statusCode非200，或者其他错误处理
-        });
+      .then(response => {
+        // statusCode === 200 的逻辑
+        console.log('data is: ', response.data);
+        let d = response.data;
+        self.netResult = d.code;
+        self.favorites = d.data.styles;
+        self.$apply();
+      })
+      .catch(err => {
+        // statusCode非200，或者其他错误处理
+      });
   }
 
-  onShow(){
+  onShow() {
     // this.testRequest();
   }
 }

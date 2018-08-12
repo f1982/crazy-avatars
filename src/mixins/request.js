@@ -5,6 +5,7 @@ export default class requestMixin extends wepy.mixin {
   data = {
     foo: 'This is request foo data.'
   }
+
   methods = {
 
   }
@@ -22,13 +23,31 @@ export default class requestMixin extends wepy.mixin {
   }
 
   http(options) {
+    const self = this;
     return request(options)
       .then((res) => {
         // statusCode === 200 的逻辑
-        return Promise.resolve(res.data);
+        let data = res.data;
+        if (0 === +data.code && data.data) {
+          return Promise.resolve(res.data);
+        } else {
+          self.showMsg(data.code);
+          return Promise.reject(err);
+        }
       }).catch((err) => {
-        // statusCode非200，或者其他错误处理
+        self.showMsg(err);
+        // statusCode 非 200，或者其他错误处理
         return Promise.reject(err);
       });
   }
+
+  showMsg(msg) {
+    console.log("msg is: ", msg);
+    wepy.showModal({
+      title: '提示',
+      content: String(msg),
+      showCancel: false
+    })
+  }
+
 }
