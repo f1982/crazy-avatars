@@ -1,0 +1,15 @@
+{
+	"description": "a project about pyq backgrounds and covers",
+	"setting": {
+		"urlCheck": true,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"appid": "touristappid",
+	"projectname": "pyqbgcover",
+	"miniprogramRoot": "./dist",
+	"condition": {}
+}
