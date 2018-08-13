@@ -9,7 +9,6 @@
   display: flex;
   flex-direction: column;
 }
-
 </style>
 
 <template>
@@ -20,12 +19,8 @@
     </view>
     <view>{{netResult}}</view>
     <button @tap="onClick">Http Request</button>
-    <view class="avatar-list">
-      <repeat for="{{favorites}}" item="item">
-        <avatarGroup :itemData="item" />
-      </repeat>
-    </view>
-
+    <avatargroup :groupName="test" :groupData.sync="favorites" />
+    <avatargroup :groupName="test2" :groupData.sync="favorites" />
   </view>
 </template>
 
@@ -43,14 +38,26 @@ export default class MyPage extends wepy.page {
     usingComponents: {}
   };
   components = {
-    avatarGroup:AvatarGroup
+    avatargroup: AvatarGroup,
     avatar: Avatar
   };
   mixins = [requestMixin];
 
   data = {
     netResult: null,
-    favorites: []
+    avatars: [
+      {
+        name: 'Test Category1',
+        list: [{
+          name:"11111",
+          id:1
+        }]
+      },
+      {
+        name: 'Test Category2',
+        list: []
+      }
+    ]
   };
   methods = {
     func1() {
@@ -61,20 +68,6 @@ export default class MyPage extends wepy.page {
     },
     onClick: function(e) {
       const self = this;
-
-      self
-        .http({
-          url: '/style-list.php?time=1&t=css&c=Nw==&i=1'
-        })
-        .then(d => {
-          self.netResult = d.code;
-          self.favorites = d.data.styles;
-          self.$apply();
-        })
-        .catch(err => {
-          // statusCode非200，或者其他错误处理
-        });
-
       console.log(
         `ComponentId:${e.detail.componentId},you selected:${e.detail.key}`
       );
@@ -84,33 +77,18 @@ export default class MyPage extends wepy.page {
   events = {};
   onLoad() {
     const self = this;
-    // wepy.showLoading();
-
-    // wepy.request({
-    //   url: 'https://www.f1982.com/app/time-signet/style-list.php',
-    //   success: function(d) {
-    //      wepy.hideLoading();
-    //     self.netResult = d.data.code;
-    //     console.log('d is: ', d);
-    //     self.favorites = d.data.data.styles;
-    //     self.$apply();
-    //   }
-    // });
-
-    // request({
-    //   url: '/style-list.php?time=1&t=css&c=Nw==&i=1'
-    // })
-    //   .then(response => {
-    //     // statusCode === 200 的逻辑
-    //     console.log('data is: ', response.data);
-    //     let d = response.data;
-    //     self.netResult = d.code;
-    //     self.favorites = d.data.styles;
-    //     self.$apply();
-    //   })
-    //   .catch(() => {
-    //     // statusCode非200，或者其他错误处理
-    //   });
+    self
+      .http({
+        url: '/style-list.php?time=1&t=css&c=Nw==&i=1'
+      })
+      .then(d => {
+        self.netResult = d.code;
+        self.favorites = d.data.styles;
+        self.$apply();
+      })
+      .catch(err => {
+        // statusCode非200，或者其他错误处理
+      });
   }
   // Other properties
 }

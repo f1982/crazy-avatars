@@ -9,7 +9,7 @@
 	},
 	"compileType": "miniprogram",
 	"appid": "touristappid",
-	"projectname": "pyqbgcover",
+	"projectname": "CrazyAvatars",
 	"miniprogramRoot": "./dist",
 	"condition": {}
 }

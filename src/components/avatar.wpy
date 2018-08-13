@@ -25,7 +25,7 @@ export default class Avatar extends wepy.component {
   data = {};
   methods = {
     tap() {
-      console.log('avatar item tap');
+      console.log(`avatar item tap ${this.itemData.name}`);
     }
   };
 }

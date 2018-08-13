@@ -1,10 +1,14 @@
 <!-- Avatar group component -->
 <template>
-    <view class="avatar-list">
-        <repeat for="{{groupData}}" item="item">
-            <avatar :itemData="item" />
-        </repeat>
+
+  <view class="avatar-list">
+    <view>
+      <text>{{groupName}}</text>
     </view>
+    <repeat for="{{groupData}}" item="item">
+      <avatar :itemData="item" />
+    </repeat>
+  </view>
 </template>
 
 <script>
@@ -13,6 +17,7 @@ import Avatar from './avatar';
 
 export default class AvatarGroup extends wepy.component {
   props = {
+    groupName: '',
     groupData: []
   };
 
