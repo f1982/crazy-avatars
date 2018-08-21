@@ -19,14 +19,14 @@
     </view>
     <view>{{netResult}}</view>
     <button @tap="onClick">Http Request</button>
-    <avatargroup :groupName="test" :groupData.sync="favorites" />
-    <avatargroup :groupName="test2" :groupData.sync="favorites" />
+    <avatar-group :groupName="test1" :groupData.sync="favorites" />
+    <avatar-group :groupName="test1" :groupData.sync="favorites" />
   </view>
 </template>
 
 <script>
 import wepy from 'wepy';
-import Avatar from '../components/avatar';
+// import Avatar from '../components/avatar';
 import AvatarGroup from '../components/avatar-group';
 // import request from 'wepy-better-request';
 
@@ -38,20 +38,25 @@ export default class MyPage extends wepy.page {
     usingComponents: {}
   };
   components = {
-    avatargroup: AvatarGroup,
-    avatar: Avatar
+    'avatar-group': AvatarGroup
+    // avatar: Avatar
   };
   mixins = [requestMixin];
 
   data = {
     netResult: null,
+    test1: 'Hello',
+    test2: 'Section Title',
+    favorites: [],
     avatars: [
       {
         name: 'Test Category1',
-        list: [{
-          name:"11111",
-          id:1
-        }]
+        list: [
+          {
+            name: '11111',
+            id: 1
+          }
+        ]
       },
       {
         name: 'Test Category2',
@@ -79,15 +84,21 @@ export default class MyPage extends wepy.page {
     const self = this;
     self
       .http({
-        url: '/style-list.php?time=1&t=css&c=Nw==&i=1'
+        url: '/style-list1.php?time=1&t=css&c=Nw==&i=1'
       })
       .then(d => {
         self.netResult = d.code;
+        console.log('d.data.styles is: ', d.data.styles);
         self.favorites = d.data.styles;
+        self.test1 = 'Hello';
+        self.test2 = 'world';
         self.$apply();
       })
       .catch(err => {
-        // statusCode非200，或者其他错误处理
+        wx.showToast({
+            title: '接口加载发生错误',
+            icon: 'none'
+        });
       });
   }
   // Other properties

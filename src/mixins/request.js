@@ -35,19 +35,24 @@ export default class requestMixin extends wepy.mixin {
           return Promise.reject(err);
         }
       }).catch((err) => {
-        self.showMsg(err);
+        console.log("err is: ", err);
+        self.showMsg(err.errMsg);
         // statusCode 非 200，或者其他错误处理
         return Promise.reject(err);
       });
   }
 
   showMsg(msg) {
-    console.log("msg is: ", msg);
-    wepy.showModal({
-      title: '提示',
-      content: String(msg),
-      showCancel: false
-    })
+    
+    wx.showToast({
+      title: '接口加载发生错误',
+      icon: 'none'
+    });
+    // wepy.showModal({
+    //   title: '提示',
+    //   content: String(msg),
+    //   showCancel: false
+    // })
   }
 
 }

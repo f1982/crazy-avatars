@@ -1,13 +1,12 @@
 <!-- Avatar group component -->
 <template>
-
-  <view class="avatar-list">
-    <view>
-      <text>{{groupName}}</text>
+  <view class="group-section">
+    <view class="group-title">Title: {{groupName}}</view>
+    <view class="group-list">
+      <repeat for="{{groupData}}" item="item">
+        <avatar :itemData="item" />
+      </repeat>
     </view>
-    <repeat for="{{groupData}}" item="item">
-      <avatar :itemData="item" />
-    </repeat>
   </view>
 </template>
 
@@ -42,10 +41,15 @@ export default class AvatarGroup extends wepy.component {
 </script>
 
 <style lang='less'>
-.avatar-list {
+.group-list {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;
+}
+
+.group-title{
+  height: 44rpx;
+  font-size: 38rpx;
 }
 </style>
