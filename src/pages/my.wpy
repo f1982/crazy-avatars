@@ -95,10 +95,7 @@ export default class MyPage extends wepy.page {
         self.$apply();
       })
       .catch(err => {
-        wx.showToast({
-            title: '接口加载发生错误',
-            icon: 'none'
-        });
+        
       });
   }
   // Other properties
