@@ -8,8 +8,8 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"appid": "touristappid",
-	"projectname": "CrazyAvatars",
+	"appid": "wx00069b20ac3f7bd2",
+	"projectname": "Crazy%20Avatars",
 	"miniprogramRoot": "./dist",
 	"condition": {}
 }

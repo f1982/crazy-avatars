@@ -65,7 +65,7 @@ export default class TabbarPage extends wepy.page {
   </view>
 </template>
 
-<style lang="less">
+<style lang="scss">
 /** less **/
 .tab-container {
   height: 100%;

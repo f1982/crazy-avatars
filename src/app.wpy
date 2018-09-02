@@ -1,107 +1,116 @@
-<style lang="less">
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
+<style lang="scss">
+  @import 'styles/global.scss';
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
 </style>
 
 <script>
-import wepy from 'wepy';
-import 'wepy-async-function';
+  import wepy from 'wepy';
+  import 'wepy-async-function';
 
-import { setStore } from 'wepy-redux';
-import configStore from './store';
+  import {
+    setStore
+  } from 'wepy-redux';
+  import configStore from './store';
 
-// import request from 'wepy-better-request';
+  // import request from 'wepy-better-request';
 
-const store = configStore();
-setStore(store);
+  const store = configStore();
+  setStore(store);
 
-export default class extends wepy.app {
-  config = {
-    pages: ['pages/index', 'pages/tabbar-page', 'pages/my'],
-    window: {
-      backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
-    },
-    tabBar: {
-      borderStyle: 'white',
-      backgroundColor: '#ffcc00',
-      selectedColor: '#ff0000',
-      color: '#000',
-      position: 'bottom',
-      list: [
-        {
-          pagePath: 'pages/index',
-          text: '首页',
-          iconPath: 'res/images/icon_my_03.png',
-          selectedIconPath: 'res/images/icon_my_03.png'
-        },
-        {
-          pagePath: 'pages/tabbar-page',
-          text: '分类',
-          iconPath: 'res/images/icon_my_02.png',
-          selectedIconPath: 'res/images/icon_my_02.png'
-        },
-        {
-          pagePath: 'pages/my',
-          text: '我的',
-          iconPath: 'res/images/icon_my_01.png',
-          selectedIconPath: 'res/images/icon_my_01.png'
-        }
-      ]
-    }
-  };
-
-  globalData = {
-    userInfo: null
-  };
-
-  constructor() {
-    super();
-    this.use('requestfix');
-    this.use('promisify');
-
-    // 配置一遍就可以了，可以在app.wpy文件中配置
-    // request.config({
-    //   baseURL: 'https://www.f1982.com/app/time-signet'
-    // });
-  }
-
-  onLaunch() {
-    this.testAsync();
-  }
-
-  sleep(s) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve('promise resolved');
-      }, s * 1000);
-    });
-  }
-
-  async testAsync() {
-    const data = await this.sleep(3);
-    console.log(data);
-  }
-
-  getUserInfo(cb) {
-    const that = this;
-    if (this.globalData.userInfo) {
-      return this.globalData.userInfo;
-    }
-    wepy.getUserInfo({
-      success(res) {
-        that.globalData.userInfo = res.userInfo;
-        cb && cb(res.userInfo);
+  export default class extends wepy.app {
+    config = {
+      pages: [
+        'pages/my', 
+        'pages/index', 
+        'pages/tabbar-page',
+        'pages/avatar-detail'
+      ],
+      window: {
+        backgroundTextStyle: 'light',
+        navigationBarBackgroundColor: '#fff',
+        navigationBarTitleText: 'WeChat',
+        navigationBarTextStyle: 'black'
+      },
+      tabBar: {
+        borderStyle: 'white',
+        backgroundColor: '#ffcc00',
+        selectedColor: '#ff0000',
+        color: '#000',
+        position: 'bottom',
+        list: [{
+            pagePath: 'pages/my',
+            text: '我的',
+            iconPath: 'res/images/icon_my_01.png',
+            selectedIconPath: 'res/images/icon_my_01.png'
+          },
+          {
+            pagePath: 'pages/index',
+            text: '首页',
+            iconPath: 'res/images/icon_my_03.png',
+            selectedIconPath: 'res/images/icon_my_03.png'
+          },
+          {
+            pagePath: 'pages/tabbar-page',
+            text: '分类',
+            iconPath: 'res/images/icon_my_02.png',
+            selectedIconPath: 'res/images/icon_my_02.png'
+          }
+        ]
       }
-    });
+    };
+
+    globalData = {
+      userInfo: null
+    };
+
+    constructor() {
+      super();
+      this.use('requestfix');
+      this.use('promisify');
+
+      // 配置一遍就可以了，可以在app.wpy文件中配置
+      // request.config({
+      //   baseURL: 'https://www.f1982.com/app/time-signet'
+      // });
+    }
+
+    onLaunch() {
+      this.testAsync();
+    }
+
+    sleep(s) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('promise resolved');
+        }, s * 1000);
+      });
+    }
+
+    async testAsync() {
+      const data = await this.sleep(3);
+      console.log(data);
+    }
+
+    getUserInfo(cb) {
+      const that = this;
+      if (this.globalData.userInfo) {
+        return this.globalData.userInfo;
+      }
+      wepy.getUserInfo({
+        success(res) {
+          that.globalData.userInfo = res.userInfo;
+          cb && cb(res.userInfo);
+        }
+      });
+    }
   }
-}
+
 </script>

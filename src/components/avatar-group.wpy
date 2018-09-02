@@ -4,7 +4,7 @@
     <view class="group-title">Title: {{groupName}}</view>
     <view class="group-list">
       <repeat for="{{groupData}}" item="item">
-        <avatar :itemData="item" />
+        <avatar class="group-item" :itemData="item" />
       </repeat>
     </view>
   </view>
@@ -28,7 +28,9 @@ export default class AvatarGroup extends wepy.component {
 
   methods = {};
 
-  events = {};
+  events = {
+    
+  };
 
   watch = {};
 
@@ -40,16 +42,44 @@ export default class AvatarGroup extends wepy.component {
 }
 </script>
 
-<style lang='less'>
-.group-list {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+<style lang='scss'>
+@import '../styles/global.scss';
+
+$itemSpacing: 40rpx;
+$itemNumInRow: 3;
+$itemWidth: 150rpx;
+$itemHeight: 150rpx;
+$itemRadius: 30rpx;
+$debugBorderSize: 6rpx;
+
+.group-section {
+  border: $debugBorderSize dashed $primaryColor;
 }
 
-.group-title{
+.group-title {
   height: 44rpx;
   font-size: 38rpx;
+}
+
+.group-list {
+  border: $debugBorderSize dashed #ad02a5;
+  width: $itemWidth * $itemNumInRow + $itemSpacing * (2+ ($itemNumInRow + -1));
+  margin: 0 auto;
+  padding-left: $itemSpacing;
+  padding-top: $itemSpacing;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.group-item {
+  height: $itemWidth;
+  width: $itemHeight;
+  box-sizing: border-box;
+  border-radius: $itemRadius;
+  margin-right: $itemSpacing;
+  margin-bottom: $itemSpacing;
 }
 </style>

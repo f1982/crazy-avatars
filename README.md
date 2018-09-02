@@ -17,6 +17,7 @@ Write tests in below file
 folder:
 spec/appSpec.js
 
+TODO: change to use mocha for test
 
 ## MinUI
 
@@ -24,6 +25,35 @@ https://github.com/meili/min-cli
 
 ## wux
 https://wux-weapp.github.io/
+## WEPY 主页
+https://tencent.github.io/wepy/
+## WEPY API 文档
+https://tencent.github.io/wepy/document.html#/api
+
+
+
+## CSS compiler
+
+//安装sass
+npm i node-sass
+//安装wepy-compiler-sass插件
+npm install wepy-compiler-sass --save-dev
+
+//配置wepy.config.js
+module.exports = {
+    "compilers": {
+        sass: {
+            'outputStyle': 'compressed'
+        }
+    }
+};
+
+### 全局 scss 设置和引入
+定义在 styles/global.scss 文件
+
+在任何需要引入全局变量的 wepy 文件里加入 
+
+@import '../styles/global.scss'; //注意路径
 
 ## 接口生成规则
 

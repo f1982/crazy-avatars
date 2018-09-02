@@ -1,5 +1,5 @@
 <style lang="less">
-.tab-container {
+  .tab-container {
   height: 100%;
   width: 100%;
   border: 1rpx solid #ffcc00;
@@ -21,85 +21,156 @@
     <button @tap="onClick">Http Request</button>
     <avatar-group :groupName="test1" :groupData.sync="favorites" />
     <avatar-group :groupName="test1" :groupData.sync="favorites" />
+    <view class="weui-loadmore weui-loadmore_line" wx:if="{{ noMoreData }}">
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line">没有更多数据</view>
+    </view>
   </view>
 </template>
 
 <script>
-import wepy from 'wepy';
-// import Avatar from '../components/avatar';
-import AvatarGroup from '../components/avatar-group';
-// import request from 'wepy-better-request';
+  import wepy from 'wepy';
+  // import Avatar from '../components/avatar';
+  import AvatarGroup from '../components/avatar-group';
+  // import request from 'wepy-better-request';
 
-import requestMixin from '../mixins/request';
+  import requestMixin from '../mixins/request';
 
-export default class MyPage extends wepy.page {
-  config = {
-    navigationBarTitleText: 'My Page',
-    usingComponents: {}
-  };
-  components = {
-    'avatar-group': AvatarGroup
-    // avatar: Avatar
-  };
-  mixins = [requestMixin];
+  export default class MyPage extends wepy.page {
+    config = {
+      navigationBarTitleText: 'My Page',
+      enablePullDownRefresh: true, //是否开启下拉刷新
+      backgroundTextStyle: "dark",
+      usingComponents: {}
+    };
+    components = {
+      'avatar-group': AvatarGroup
+      // avatar: Avatar
+    };
+    mixins = [requestMixin];
 
-  data = {
-    netResult: null,
-    test1: 'Hello',
-    test2: 'Section Title',
-    favorites: [],
-    avatars: [
-      {
-        name: 'Test Category1',
-        list: [
-          {
+    data = {
+      netResult: null,
+      test1: 'Hello',
+      test2: 'Section Title',
+      favorites: [],
+      avatars: [{
+          name: 'Test Category1',
+          list: [{
             name: '11111',
             id: 1
-          }
-        ]
+          }]
+        },
+        {
+          name: 'Test Category2',
+          list: []
+        }
+      ],
+      articles: [], // 要加载的数据集合
+      noMoreData: false,
+      isLoading: false, // 是否在加载中
+      page: 1 // 页数 给予默认值1
+    };
+    methods = {
+      func1() {
+        console.log('func1');
       },
-      {
-        name: 'Test Category2',
-        list: []
+      func2() {
+        console.log('func2');
+      },
+      onClick: function (e) {
+        const self = this;
+        console.log(
+          `ComponentId:${e.detail.componentId},you selected:${e.detail.key}`
+        );
       }
-    ]
-  };
-  methods = {
-    func1() {
-      console.log('func1');
-    },
-    func2() {
-      console.log('func2');
-    },
-    onClick: function(e) {
+    };
+
+    events = {
+      'avatar-tap-event': (p1, p2, p3, p4, $event) => {
+        console.log('p1,p2,p3,p4,$event', p1, p2, p3, p4, $event);
+        this.$navigate('avatar-detail');
+      }
+    };
+
+    onLoad() {
       const self = this;
-      console.log(
-        `ComponentId:${e.detail.componentId},you selected:${e.detail.key}`
-      );
+      self
+        .http({
+          url: '/style-list.php?time=1&t=css&c=Nw==&i=1'
+        })
+        .then(d => {
+          self.netResult = d.code;
+          console.log('d.data.styles is: ', d.data.styles);
+          self.favorites = d.data.styles;
+          self.test1 = 'Hello';
+          self.test2 = 'world';
+          self.$apply();
+        })
+        .catch(err => {
+
+        });
     }
-  };
 
-  events = {};
-  onLoad() {
-    const self = this;
-    self
-      .http({
-        url: '/style-list1.php?time=1&t=css&c=Nw==&i=1'
-      })
-      .then(d => {
-        self.netResult = d.code;
-        console.log('d.data.styles is: ', d.data.styles);
-        self.favorites = d.data.styles;
-        self.test1 = 'Hello';
-        self.test2 = 'world';
-        self.$apply();
-      })
-      .catch(err => {
-        
-      });
+    async onPullDownRefresh() {
+      console.log('onPullDownRefresh')
+      console.log('重新加载')
+      this.noMoreData = false
+      this.page = 1
+      return await this.getArticles(this.page,true)
+      wepy.stopPullDownRefresh();
+      this.$apply();
+    }
+
+    async onReachBottom() {
+      console.log('onReachBottom')
+      // 如果没有更多数据， 或者正在加载，直接返回
+      if (this.noMoreData || this.isLoading) {
+        return
+      }
+      // 开始请求之前设置 isLoading 为true
+      this.isLoading = true
+      this.page = this.page + 1
+      await this.getArticles(this.page,false)
+      this.$apply();
+    }
+
+    async getArticles(page = 1, reset = false) {
+      console.log('getArticles');
+
+      // let response
+      // try {
+      //   response = await api.request({
+      //     url: "articles",
+      //     data: {
+      //       page: page,
+      //       weid: 7
+      //     }
+      //   })
+      //   let article = response.data.data;
+      //   console.log(response)
+      //   // console.log(article)
+      //   // console.log(reset)
+      //   // 如果传入参数 reset 为true，则覆盖 topics
+      //   this.articles = reset ? article : this.articles.concat(article)
+      //   // this.articles = reset ?this.articles : this.articles.concat(this.articles)
+
+      //   // console.log(this.articles);
+      //   let current_page = response.data.current_page
+      //   let total = response.data.total
+      //   console.log("current_page=" + current_page + ",total=" + total)
+      //   // 根据分页设置是否还有更多数据
+      //   if (current_page === total) {
+      //     console.log("无更多")
+      //     this.noMoreData = true
+      //   }
+      // } catch (err) {
+      //   console.log(err);
+      // }
+      // this.$apply()
+      // return response
+
+    }
+
   }
-  // Other properties
-}
+
 </script>
-
-
