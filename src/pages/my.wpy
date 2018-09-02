@@ -21,7 +21,7 @@
     <button @tap="onClick">Http Request</button>
     <avatar-group :groupName="test1" :groupData.sync="favorites" />
     <avatar-group :groupName="test1" :groupData.sync="favorites" />
-    <wxc-loadmore text="正在努力加载中..." icon="https://s10.mogucdn.com/mlcdn/c45406/171018_8gj08gbl9fj6igb380dec9k1ifhe2_32x32.png">
+    <wxc-loadmore wx:if="{{isLoading}}" text="正在努力加载中..." icon="https://s10.mogucdn.com/mlcdn/c45406/171018_8gj08gbl9fj6igb380dec9k1ifhe2_32x32.png">
     </wxc-loadmore>
     <wxc-loadmore is-end="{{true}}"></wxc-loadmore>
   </view>
