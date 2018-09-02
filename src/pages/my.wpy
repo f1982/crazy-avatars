@@ -21,9 +21,9 @@
     <button @tap="onClick">Http Request</button>
     <avatar-group :groupName="test1" :groupData.sync="favorites" />
     <avatar-group :groupName="test1" :groupData.sync="favorites" />
-    <view class="weui-loadmore weui-loadmore_line" wx:if="{{ noMoreData }}">
-      <view class="weui-loadmore__tips weui-loadmore__tips_in-line">没有更多数据</view>
-    </view>
+    <wxc-loadmore text="正在努力加载中..." icon="https://s10.mogucdn.com/mlcdn/c45406/171018_8gj08gbl9fj6igb380dec9k1ifhe2_32x32.png">
+    </wxc-loadmore>
+    <wxc-loadmore is-end="{{true}}"></wxc-loadmore>
   </view>
 </template>
 
@@ -40,7 +40,9 @@
       navigationBarTitleText: 'My Page',
       enablePullDownRefresh: true, //是否开启下拉刷新
       backgroundTextStyle: "dark",
-      usingComponents: {}
+      usingComponents: {
+        'wxc-loadmore': '../packages/@minui/wxc-loadmore/dist/index'
+      }
     };
     components = {
       'avatar-group': AvatarGroup
@@ -116,7 +118,7 @@
       console.log('重新加载')
       this.noMoreData = false
       this.page = 1
-      return await this.getArticles(this.page,true)
+      return await this.getArticles(this.page, true)
       wepy.stopPullDownRefresh();
       this.$apply();
     }
@@ -130,7 +132,7 @@
       // 开始请求之前设置 isLoading 为true
       this.isLoading = true
       this.page = this.page + 1
-      await this.getArticles(this.page,false)
+      await this.getArticles(this.page, false)
       this.$apply();
     }
 
