@@ -6,6 +6,7 @@
     $ min install @minui/wxc-tab
     $ min install @minui/wxc-dialog
     $ min install @minui/wxc-countdown
+    $ min install @minui/wxc-loadmore
 
     $ wepy build --watch
 
